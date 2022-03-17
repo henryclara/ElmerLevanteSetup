@@ -1,0 +1,103 @@
+Header
+  Mesh DB "." "Mesh"
+End
+
+Simulation
+  Coordinate System = Cartesian 3D
+  Steady State Max Iterations = 1
+  Simulation Type = Steady
+  Extruded Mesh Levels = 10
+  Output Intervals = 1
+  Post File = TestSurfaces.vtu
+  Max Output Level = 4
+  Extruded Mesh Levels = 10
+ 
+  Steady State Max Iterations = 1
+  Steady State Min Iterations = 1
+End
+
+Body 1
+  !Equation = 1
+  Initial Condition = 1
+End
+
+Body 2
+  !Equation = 2
+  Initial Condition = 2
+End
+
+Body 3
+  !Equation = 3
+  Initial Condition = 3
+End
+
+Equation 1
+  Active Solvers(3) = 1 2 3
+End
+
+Material 1
+End
+
+Initial Condition 1
+  Bed Variable = String bedrock
+End
+
+Initial Condition 2
+  Zs Variable = String zs
+End
+
+Initial Condition 3
+  Zb Variable = String zb
+End
+
+Solver 1
+  Equation = Reader
+  Procedure = "GridDataReader" "GridDataReader"
+
+  !---- NOTE: File is case sensitive, String is not!
+  !Filename = File "./MyFile.nc"
+  Filename = File "mmp.nc"
+  !Time Dim Name = String "time"
+  !X Dim Name = String "x1" 
+  !Y Dim Name = String "y1"
+  X Dim Name = String "x" 
+  Y Dim Name = String "y"
+
+  !Time Var Name = String "time"
+  !X Var Name = String "x1"
+  !Y Var Name = String "y1"
+  X Var Name = String "x"
+  Y Var Name = String "y"
+
+  !--- Interpolation variables
+  X Epsilon  = Real 1.0e-2 
+  Y Epsilon  = Real 1.0e-2 
+  Time Epsilon  = Real 0.01
+
+  Interpolation Bias = Real 0.0 
+  Interpolation Multiplier = Real 1.0 
+
+  Is Time Counter = Logical True
+
+  Variable 1 = File "bedrock"
+  Variable 2 = File "zs"
+  Variable 3 = File "zb"
+
+  Enable Scaling = Logical False ! Scales the Elmer grid to match the NetCDF grid 
+End
+
+Solver 2
+  Equation = String SaveScalars
+  Procedure = "SaveData" "SaveScalars"
+  FileName = File "temp.dat"
+  Show Norm = True
+  Show Norm Index = 1
+
+  Variable 1 = String "bedrock"
+  Operator 1 = String mean
+End
+
+
+Solver 2 :: Reference Norm = Real 3.31694136E+01
+Solver 2 :: Reference Norm Tolerance = Real 1E-06
+

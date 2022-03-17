@@ -1,0 +1,8 @@
+Elmer version: 9.0
+Elmer revision: eeb9b0d2
+Elmer compilation date: 2020-12-11
+Solver input file: cgl.sif
+File started at: 2022/02/15 13:57:40
+ 
+Variables in columns of matrix: ./temp.dat
+   1: mean: bedrock
