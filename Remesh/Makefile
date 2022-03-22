@@ -5,11 +5,10 @@
 
 EXECUTABLES = src/DistanceSolverRD 
 
-
-NumProcs=80
-NumProcx=10
-NumProcy=8
-NumProcz=1
+# The following lines were changed for consistency with the original mistal setup:
+NumProcs=1
+NumProcx=1
+NumProcy=1
 
 InputSif=Remesh.sif
 
@@ -21,11 +20,17 @@ all: clean ini grid submit
 
 grid:
 	#ElmerGrid 2 2 Mesh -partition 10 8 1 -autoclean
-	ElmerGrid 2 2 Mesh -metis 80 4  -autoclean
+	# The following line was previously used:
+	#ElmerGrid 2 2 Mesh -metis 80 4  -autoclean
+	# New lines (2):
+	gmsh Mesh.geo -1 -2
+	ElmerGrid 14 2 Mesh.msh  -autoclean
 
 submit: ini
-
-	mpirun -n 80 ElmerSolver_mpi
+	# Previous command:
+	# mpirun -n 80 ElmerSolver_mpi
+	# New command:
+	mpirun -n 1 ElmerSolver_mpi
 
 compile:  
 	elmerf90 src/DistanceSolveRD.f90 -o src/DistanceSolveRD
@@ -38,9 +43,18 @@ clean:
 	rm -fr results/*
 
 ini:
-	echo Init.sif > ELMERSOLVER_STARTINFO
+	# Old line:
+	# echo Init.sif > ELMERSOLVER_STARTINFO
+	# New line:
+	echo Remesh.sif > ELMERSOLVER_STARTINFO
 
 .f90:
-	elmerf90  -o Init.sif 10 8 1 80 Mistral $<
+	# Old line:
+	# elmerf90  -o Init.sif 10 8 1 80 Mistral $<
+	# New line:
+	elmerf90  -o IceRiseRemesh.sif $<
 .c:
-	gcc  -o Init.sif 10 8 1 80 Mistral $< -lm
+	# Old line:
+	# gcc  -o Init.sif 10 8 1 80 Mistral $< -lm
+	# New line:
+	gcc  -o IceRiseRemesh.sif $< -lm
