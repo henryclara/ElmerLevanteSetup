@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH -o /work/bm1164/m300832/ContinentalSetup/Remesh/Logs/SLURM_job.%j.%N.out
-#SBATCH -e /work/bm1164/m300832/ContinentalSetup/Remesh/Logs/SLURM_job.%j.%N.err
-#SBATCH -D /work/bm1164/m300832/ContinentalSetup/Remesh/
+#SBATCH -o /work/bm1164/from_Mistral/bm1164/m300832/ContinentalSetup/Remesh/Logs/SLURM_job.%j.%N.out
+#SBATCH -e /work/bm1164/from_Mistral/bm1164/m300832/ContinentalSetup/Remesh/Logs/SLURM_job.%j.%N.err
+#SBATCH -D /work/bm1164/from_Mistral/bm1164/m300832/ContinentalSetup/Remesh/
 #SBATCH -J Remesh
 #SBATCH --get-user-env
 #SBATCH --account=bm1164
 #SBATCH --ntasks=80
 #SBATCH --time=00:10:00
-#SBATCH --partition=compute,compute2
+#SBATCH --partition=compute
 #=================================================================================================================
 set -e
 echo Here comes the Nodelist:
@@ -17,7 +17,7 @@ echo Here comes the partition the job runs in:
 echo $SLURM_JOB_PARTITION
 cd $SLURM_SUBMIT_DIR
 
-source ModulesPlusPathsMistralGCC71.sh
+source ModulesPlusPaths2LoadIntel.sh
 
 cp $ELMER_HOME/share/elmersolver/lib/FreeSurfaceSolver.so src/MyFreeSurfaceSolver.so
 echo $ELMER_HOME

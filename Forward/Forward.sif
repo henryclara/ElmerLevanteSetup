@@ -41,7 +41,7 @@ Simulation
 
   Timestepping Method = "bdf"
   BDF Order = 1
-  Timestep Intervals = 10
+  Timestep Intervals = 2
   Output Intervals = 1
   Timestep Sizes = 0.1
 
@@ -49,7 +49,7 @@ Simulation
   Steady State Max Iterations = 1
   Steady State Min Iterations = 1
 
-	Restart File="../../Init/Mesh/Init000000.result"
+	Restart File="../../Init/Mesh/InitVel000000.result"
 	Restart Before Initial Conditions = Logical True
 	!Specify name of result file. Used for restarts!!
   Output File = "TestTimeOutput000000.result"
@@ -201,10 +201,10 @@ End
 Solver 4
   !Exec Solver = Never
   Equation = "Navier-Stokes"
-	Optimize Bandwidth = Logical True
+  Optimize Bandwidth = Logical True
   Linear System Solver = Direct
-  Linear System Direct Method = "Mumps"
-	Mumps percentage increase working space = Integer 1600
+  Linear System Direct Method = "mumps"
+  Mumps percentage increase working space = Integer 1600
 
   Nonlinear System Max Iterations = 50
   Nonlinear System Convergence Tolerance  = 1.0e-6
@@ -295,8 +295,8 @@ End
 Solver 8
   !Exec Solver = Never
   Equation = "Free Surface Top"
-  Procedure =  "./src/MyFreeSurfaceSolver" "FreeSurfaceSolver"
-  !Procedure =  "FreeSurfaceSolver" "FreeSurfaceSolver"
+  !Procedure =  "./src/MyFreeSurfaceSolver" "FreeSurfaceSolver"
+  Procedure =  "FreeSurfaceSolver" "FreeSurfaceSolver"
   Variable = "Zs"
   Variable DOFs =  1
   Exported Variable 1 = "Zs Residual"
@@ -391,6 +391,7 @@ Solver 11
 End
 
 Solver 12
+  !Exec Solver = Never
   Procedure = "SaveData" "SaveMaterials"
   Parameter 1 = String "Sea Level"
 End
@@ -406,7 +407,7 @@ End
 
 Solver 14
   Equation = "Flowdepth"
-   Exec Solver = "Never"
+   !Exec Solver = "Never"
    Procedure = File "ElmerIceSolvers" "FlowDepthSolver"
    Variable = String "Depth"
    Variable DOFs = 1

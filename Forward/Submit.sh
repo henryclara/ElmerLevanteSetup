@@ -9,6 +9,26 @@
 #SBATCH --time=04:00:00
 #SBATCH --partition=compute
 #=================================================================================================================
+
+export OMPI_MCA_pml="ucx"
+export OMPI_MCA_btl=self
+export OMPI_MCA_osc="pt2pt"
+export UCX_IB_ADDR_TYPE=ib_global
+# for most runs one may or may not want to disable HCOLL
+export OMPI_MCA_coll="^ml,hcoll"
+export OMPI_MCA_coll_hcoll_enable="0"
+export HCOLL_ENABLE_MCAST_ALL="0"
+export HCOLL_MAIN_IB=mlx5_0:1
+export UCX_NET_DEVICES=mlx5_0:1
+export UCX_TLS=mm,knem,cma,dc_mlx5,dc_x,self
+export UCX_UNIFIED_MODE=y
+export HDF5_USE_FILE_LOCKING=FALSE
+export OMPI_MCA_io="romio321"
+export UCX_HANDLE_ERRORS=bt
+
+ulimit -s 102400
+ulimit -c 0
+
 set -e
 echo Here comes the Nodelist:
 echo $SLURM_JOB_NODELIST
